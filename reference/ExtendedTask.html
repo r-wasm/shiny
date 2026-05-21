@@ -34,7 +34,7 @@ begin until the previous invocation has completed."><meta property="og:image" co
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">shiny</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.11.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.13.0.9000</span>
       </span>
     </div>
 
@@ -106,26 +106,44 @@ section on <a href="https://rstudio.github.io/promises/articles/promises_06_shin
 is, a function that quickly returns a promise) and allows even that very
 session to immediately unblock and carry on with other user interactions.</p>
     </div>
+    <div id="opentelemetry-integration">
+    <h2>OpenTelemetry Integration</h2>
+
+
+
+<p>When an <code>ExtendedTask</code> is created, if OpenTelemetry tracing is enabled for
+<code>"reactivity"</code> (see <code><a href="withOtelCollect.html">withOtelCollect()</a></code>), the <code>ExtendedTask</code> will record
+spans for each invocation of the task. The tracing level at <code>invoke()</code> time
+does not affect whether spans are recorded; only the tracing level when
+calling <code>ExtendedTask$new()</code> matters.</p>
+<p>The OTel span will be named based on the label created from the variable the
+<code>ExtendedTask</code> is assigned to. If no label can be determined, the span will
+be named <code>&lt;anonymous&gt;</code>. Similar to other Shiny OpenTelemetry spans, the span
+will also include source reference attributes and session ID attributes.</p>
+<p></p><div class="sourceCode r"><pre><code><span><span class="fu"><a href="../reference/withOtelCollect.html">withOtelCollect</a></span><span class="op">(</span><span class="st">"all"</span>, <span class="op">{</span></span>
+<span>  <span class="va">my_task</span> <span class="op">&lt;-</span> <span class="va"><a href="../reference/ExtendedTask.html">ExtendedTask</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="op">{</span> <span class="va">...</span> <span class="op">}</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Span recorded for this invocation: ExtendedTask my_task</span></span>
+<span><span class="va">my_task</span><span class="op">$</span><span class="fu">invoke</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre><p></p></div>
+    </div>
     <div id="methods">
     <h2>Methods</h2>
 
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
-
-<ul><li><p><a href="#method-ExtendedTask-new"><code>ExtendedTask$new()</code></a></p></li>
+<p></p><ul><li><p><a href="#method-ExtendedTask-initialize"><code>ExtendedTask$new()</code></a></p></li>
 <li><p><a href="#method-ExtendedTask-invoke"><code>ExtendedTask$invoke()</code></a></p></li>
 <li><p><a href="#method-ExtendedTask-status"><code>ExtendedTask$status()</code></a></p></li>
 <li><p><a href="#method-ExtendedTask-result"><code>ExtendedTask$result()</code></a></p></li>
-</ul></div><p></p><hr><a id="method-ExtendedTask-new"></a><div class="section">
-<h3 id="method-new-">Method <code><a href="https://rdrr.io/r/methods/new.html" class="external-link">new()</a></code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
+</ul></div><p></p><hr><a id="method-ExtendedTask-initialize"></a><div class="section">
+<h3 id="extendedtask-new-"><code>ExtendedTask$new()</code><a class="anchor" aria-label="anchor" href="#extendedtask-new-"></a></h3>
 <p>Creates a new <code>ExtendedTask</code> object. <code>ExtendedTask</code> should generally be
 created either at the top of a server function, or at the top of a module
 server function.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/ExtendedTask.html">ExtendedTask</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">func</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>func</code></dt>
 <dd><p>The long-running operation to execute. This should be an
@@ -147,17 +165,17 @@ read reactive inputs and pass them as arguments.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-ExtendedTask-invoke"></a><div class="section">
-<h3 id="method-invoke-">Method <code>invoke()</code><a class="anchor" aria-label="anchor" href="#method-invoke-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-ExtendedTask-invoke"></a><div class="section">
+<h3 id="extendedtask-invoke-"><code>ExtendedTask$invoke()</code><a class="anchor" aria-label="anchor" href="#extendedtask-invoke-"></a></h3>
 <p>Starts executing the long-running operation. If this <code>ExtendedTask</code> is
 already running (meaning, a previous call to <code>invoke()</code> is not yet
 complete) then enqueues this invocation until after the current
 invocation, and any already-enqueued invocation, completes.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ExtendedTask</span><span class="op">$</span><span class="fu">invoke</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>...</code></dt>
 <dd><p>Parameters to use for this invocation of the underlying
@@ -169,8 +187,10 @@ arguments.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-ExtendedTask-status"></a><div class="section">
-<h3 id="method-status-">Method <code><a href="https://mirai.r-lib.org/reference/status.html" class="external-link">status()</a></code><a class="anchor" aria-label="anchor" href="#method-status-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-ExtendedTask-status"></a><div class="section">
+<h3 id="extendedtask-status-"><code>ExtendedTask$status()</code><a class="anchor" aria-label="anchor" href="#extendedtask-status-"></a></h3>
 <p>This is a reactive read that invalidates the caller when the task's
 status changes.</p>
 <p>Returns one of the following values:</p><ul><li><p><code>"initial"</code>: This <code>ExtendedTask</code> has not yet been invoked</p></li>
@@ -179,14 +199,15 @@ status changes.</p>
 retrieved via the <code>result()</code> method</p></li>
 <li><p><code>"error"</code>: An invocation completed with an error, which will be
 re-thrown if you call the <code>result()</code> method</p></li>
-</ul><div class="section">
+</ul><p></p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ExtendedTask</span><span class="op">$</span><span class="fu">status</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+</div>
 
-</div><p></p><hr><a id="method-ExtendedTask-result"></a><div class="section">
-<h3 id="method-result-">Method <code>result()</code><a class="anchor" aria-label="anchor" href="#method-result-"></a></h3>
+<p></p><hr><a id="method-ExtendedTask-result"></a><div class="section">
+<h3 id="extendedtask-result-"><code>ExtendedTask$result()</code><a class="anchor" aria-label="anchor" href="#extendedtask-result-"></a></h3>
 <p>Attempts to read the results of the most recent invocation. This is a
 reactive read that invalidates as the task's status changes.</p>
 <p>The actual behavior differs greatly depending on the current status of
@@ -211,8 +232,8 @@ invalidation will be ignored.</p><div class="section">
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ExtendedTask</span><span class="op">$</span><span class="fu">result</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
-
 </div>
+
 
     </div>
 
@@ -282,7 +303,7 @@ invalidation will be ignored.</p><div class="section">
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer></div>

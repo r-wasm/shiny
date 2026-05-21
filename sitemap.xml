@@ -2,6 +2,8 @@
 <url><loc>/404.html</loc></url>
 <url><loc>/CONTRIBUTING.html</loc></url>
 <url><loc>/LICENSE-text.html</loc></url>
+<url><loc>/LICENSE.html</loc></url>
+<url><loc>/README-npm.html</loc></url>
 <url><loc>/TODO-promises.html</loc></url>
 <url><loc>/authors.html</loc></url>
 <url><loc>/index.html</loc></url>
@@ -144,6 +146,7 @@
 <url><loc>/reference/snapshotPreprocessOutput.html</loc></url>
 <url><loc>/reference/splitLayout.html</loc></url>
 <url><loc>/reference/stacktrace.html</loc></url>
+<url><loc>/reference/startApp.html</loc></url>
 <url><loc>/reference/stopApp.html</loc></url>
 <url><loc>/reference/submitButton.html</loc></url>
 <url><loc>/reference/tabPanel.html</loc></url>
@@ -174,6 +177,7 @@
 <url><loc>/reference/viewer.html</loc></url>
 <url><loc>/reference/wellPanel.html</loc></url>
 <url><loc>/reference/withMathJax.html</loc></url>
+<url><loc>/reference/withOtelCollect.html</loc></url>
 <url><loc>/reference/withProgress.html</loc></url>
 </urlset>
 

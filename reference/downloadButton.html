@@ -20,7 +20,7 @@ function."><meta property="og:image" content="/logo.png"><!-- mathjax --><script
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">shiny</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.11.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.13.0.9000</span>
       </span>
     </div>
 
@@ -64,10 +64,11 @@ function.</p>
 <span>  label <span class="op">=</span> <span class="st">"Download"</span>,</span>
 <span>  class <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span>,</span>
-<span>  icon <span class="op">=</span> <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="icon.html">icon</a></span><span class="op">(</span><span class="st">"download"</span><span class="op">)</span></span>
+<span>  icon <span class="op">=</span> <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="icon.html">icon</a></span><span class="op">(</span><span class="st">"download"</span><span class="op">)</span>,</span>
+<span>  enabled <span class="op">=</span> <span class="st">"auto"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">downloadLink</span><span class="op">(</span><span class="va">outputId</span>, label <span class="op">=</span> <span class="st">"Download"</span>, class <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">downloadLink</span><span class="op">(</span><span class="va">outputId</span>, label <span class="op">=</span> <span class="st">"Download"</span>, class <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span>, enabled <span class="op">=</span> <span class="st">"auto"</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -93,6 +94,19 @@ is assigned to.</p></dd>
 
 <dt id="arg-icon">icon<a class="anchor" aria-label="anchor" href="#arg-icon"></a></dt>
 <dd><p>An <code><a href="icon.html">icon()</a></code> to appear on the button. Default is <code>icon("download")</code>.</p></dd>
+
+
+<dt id="arg-enabled">enabled<a class="anchor" aria-label="anchor" href="#arg-enabled"></a></dt>
+<dd><p>Controls the enabled/disabled behavior of the button or link.
+Defaults to <code>"auto"</code>.</p><ul><li><p><code>"auto"</code>: the button or link starts disabled and is automatically
+enabled once the server has initialized the <code>downloadHandler</code>.</p></li>
+<li><p><code>TRUE</code>: the button or link starts enabled immediately, without waiting
+for the <code>downloadHandler</code>.</p></li>
+<li><p><code>FALSE</code>: the button or link starts disabled and Shiny will <strong>never</strong>
+automatically enable it, even after the <code>downloadHandler</code> is ready.
+You are responsible for managing the enabled/disabled state yourself
+(e.g., with <code>shinyjs::enable()</code> and <code>shinyjs::disable()</code>).</p></li>
+</ul></dd>
 
 </dl></div>
     <div id="see-also">
@@ -144,7 +158,7 @@ is assigned to.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer></div>
